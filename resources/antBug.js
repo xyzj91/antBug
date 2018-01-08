@@ -6,7 +6,7 @@ window.antBug = (function(window,documents){
     var ant = {};
     var _self = this;
     _self.isInit = false;//防止重复监听
-    ant.SERVER_HOST = "http://www.baidu.com";//服务器地址
+    ant.SERVER_HOST = "";//服务器地址
     _self.APIVERSION = "1.0";//插件版本
     _self.messageContent = {
         notifierVersion: _self.APIVERSION,//插件版本号
@@ -425,10 +425,11 @@ window.antBug = (function(window,documents){
     return ant;
 })(window,document);
 
-//demo
-antBug.init({
+/**demo 集成时请去掉
+ antBug.init({
     appVersion: "3.1",//app版本
 });
-antBug.collectHttpError = false;
-antBug.collectResourceError = true;
-antBug.SERVER_HOST = "http://www.baidu.com";
+ antBug.collectHttpError = false;
+ antBug.collectResourceError = true;
+ antBug.SERVER_HOST = "http://www.baidu.com";
+ **/
