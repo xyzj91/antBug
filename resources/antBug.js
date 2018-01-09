@@ -8,6 +8,7 @@ window.antBug = (function(window,documents){
     _self.isInit = false;//防止重复监听
     ant.SERVER_HOST = "";//服务器地址
     ant.APP_ID = "default";//唯一识别ID
+    ant.DEBUG = false;//debug 模式
     _self.APIVERSION = "1.0";//插件版本
     _self.messageContent = {
         notifierVersion: _self.APIVERSION,//插件版本号
@@ -191,22 +192,40 @@ window.antBug = (function(window,documents){
         }
         return res;
     }
+    //是否是字符串
+    _self.isString = function(str){
+        return (typeof str=='string')&&str.constructor==String;
+    }
+    //输出日志
+    _self.dump = function(data,message){
+        if(ant.DEBUG){
+            if(!_self.isString(data)){
+                data = JSON.stringify(data);
+            }
+            console.log(data);
+            if(message){
+                console.log(message);
+            }
+        }
+    }
     //主动上报异常接口
     ant.error = function(messageContent){
         if(ant.maxErrorNum){
             ant.maxErrorNum -= 1;
             var message = _self.converData(_self.parseErrorMessage(messageContent));
+            _self.dump(message);//输出日志
             if(message){
                 _self.send({
                     "type":"post",
                     "url":ant.SERVER_HOST,
                     "data":message,
                     "success":function(data){
+                        _self.dump(data);//输出日志
                         //上报成功,移除记录
                         _self.removeBreadcrumbs();
                     },
                     "error":function(errcode){
-                        console.log("记录上传失败");
+                        _self.dump(errcode,"记录上传失败");//输出日志
                     }
                 });
             }
