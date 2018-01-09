@@ -6,7 +6,17 @@
     <script src="antBug.min.js"></script>
     <!--<script src="antBug.js"></script>-->
     <script>
-        antBug.init();
+        antBug.init({
+            appVersion: "3.1",//app版本
+        });
+        antBug.collectHttpError = false;
+        antBug.collectResourceError = true;
+        antBug.DEBUG = true;
+        antBug.APP_ID = "default";
+        antBug.SERVER_HOST = "baidu.com";
+
+
+        //测试网络错误
         setTimeout(function(){
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "https://fundebug.com/login");

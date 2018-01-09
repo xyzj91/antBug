@@ -6,6 +6,17 @@
     <script src="antBug.min.js"></script>
     <!--<script src="antBug.js"></script>-->
     <script>
+        antBug.init({
+            appVersion: "3.1",//app版本
+        });
+        antBug.collectHttpError = false;
+        antBug.collectResourceError = true;
+        antBug.DEBUG = true;
+        antBug.APP_ID = "default";
+        antBug.SERVER_HOST = "baidu.com";
+
+
+        //测试网络错误
         setTimeout(function(){
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "https://fundebug.com/login");
@@ -17,31 +28,13 @@
                 }));
         },2000);
 
-        // _ = XMLHttpRequest.prototype;
-        // var X, C, F, P = _.open;
-        // _.open = function(e, t) {
-        //     P.apply(this, arguments);
-        //    console.log(7777);
-        // };
-        // I = _.send;
-        // _.send = function() {
-        //     console.log(88888);
-        //     if (O) return void(O = !1);
-        //     var t = this,
-        //         r = t.onreadystatechange;
-        //     t.onreadystatechange = function() {
-        //         if (4 === t.readyState && !t.Fundebug && C != k) {
-        //
-        //         }
-        //         r && r.apply(this, arguments)
-        //     }, I.apply(this, arguments)
-        // }
+        //测试js报错
         aler("55555");
-        // ant.test();
     </script>
 </head>
 <body>
 66666
+<!--测试图片加载错误-->
 <img src="404.jpg">
 <!--<img src="405.jpg">-->
 <!--<img src="406.jpg">-->
