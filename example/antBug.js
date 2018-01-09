@@ -111,13 +111,15 @@ window.antBug = (function(window,documents){
         }
         ajax.open(data.type,data.url);
         if(data.data){
-            ajax.send(data);
+            ajax.send(data.data);
         }
         ajax.onreadystatechange = function(){
-            if(ajax.readyState==4 && ajax.status==200){
-                data.success(xml.responseText);
-            }else {
-                data.error(ajax.status);
+            if(ajax.readyState==4){
+                if(ajax.status==200){
+                    data.success(ajax.responseText);
+                }else{
+                    data.error(ajax.status);
+                }
             }
         };
     }
