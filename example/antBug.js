@@ -7,12 +7,14 @@ window.antBug = (function(window,documents){
     var _self = this;
     _self.isInit = false;//防止重复监听
     ant.SERVER_HOST = "";//服务器地址
+    ant.APP_ID = "default";//唯一识别ID
     _self.APIVERSION = "1.0";//插件版本
     _self.messageContent = {
         notifierVersion: _self.APIVERSION,//插件版本号
         userAgent: window.navigator.userAgent,//用户agent头
         locale: window.navigator.language || window.navigator.userLanguage,//语言
         url: window.location.href,//接口地址
+        appId: ant.APP_ID,//识别id
         title: documents.title,//当前页面标题
         time: (new Date).getTime(),
         appVersion: "",//app版本
