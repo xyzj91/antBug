@@ -99,6 +99,9 @@ window.antBug = (function(window,documents){
     //异常上报到服务器
     _self.send = function(param){
         var ajax = new XMLHttpRequest();
+        if(ajax.overrideMimeType){
+            ajax.overrideMimeType("text/xml");
+        }
         var data = {
             "type":"get",
             "url":"",
@@ -426,6 +429,16 @@ window.antBug = (function(window,documents){
             }
         }
 
+    }
+
+    /**
+     * 设置扩展参数
+     * @param data
+     */
+    ant.setExt = function(data){
+        if(data){
+            _self.messageContent.ext = data;
+        }
     }
 
     /**

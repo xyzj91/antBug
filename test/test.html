@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>蚂蚁Bug监控系统</title>
-    <script src="antBug.min.js"></script>
-    <!--<script src="antBug.js"></script>-->
+    <!--<script src="antBug.min.js"></script>-->
+    <script src="antBug.js"></script>
     <script>
         antBug.init({
             appVersion: "3.1",//app版本
@@ -12,21 +12,21 @@
         antBug.collectHttpError = false;
         antBug.collectResourceError = true;
         antBug.DEBUG = true;
-        antBug.APP_ID = "default";
-        antBug.SERVER_HOST = "baidu.com";
+        antBug.APP_ID = "tapinweb";
+        antBug.SERVER_HOST = "http://api.haijipet.com/log_collect/log_collect/exception_collect";
 
 
         //测试网络错误
-        setTimeout(function(){
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://fundebug.com/login");
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify(
-                {
-                    email: "help@fundebug.com",
-                    password: "akhakfnak"
-                }));
-        },2000);
+        // setTimeout(function(){
+        //     var xhr = new XMLHttpRequest();
+        //     xhr.open("POST", "https://fundebug.com/login");
+        //     xhr.setRequestHeader('Content-Type', 'application/json');
+        //     xhr.send(JSON.stringify(
+        //         {
+        //             email: "help@fundebug.com",
+        //             password: "akhakfnak"
+        //         }));
+        // },2000);
 
         // _ = XMLHttpRequest.prototype;
         // var X, C, F, P = _.open;
