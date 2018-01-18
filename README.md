@@ -30,6 +30,12 @@ antBug是一个前端模块化的异常上报组件,可以上报前端的js执�
 
 	antBug.DEBUG = true;
 
+### 自动启动异常上报时间 antBug.autoWaittime
+现在系统改为在页面完成后再上传bug,防止跟页面其他业务竞争资源.此项为页面加载完成后启动异常上报的等待时间
+
+	antBug.autoWaittime = 2000;
+
+
 ### 设置扩展参数 antBug.setExt(data)
 设置自定义扩展参数到服务器
 
@@ -62,6 +68,11 @@ antBug是一个前端模块化的异常上报组件,可以上报前端的js执�
 如果有自定义的需要传递的参数可以在ext中进行传递
 异常类型分为:resourceError,httpError,uncaughtError
 
+### 启动异常上报 antBug.start()
+为了不跟项目竞争系统资源,所以现在改为启动异常上报时才上报异常.启动之前收到的异常不会丢失
+
+	antBug.start({test:"test"});
+
 ### resourceError 资源加载异常错误
 当页面中的资源加载异常时会触发此错误类型
 例如页面中的图片加载错误
@@ -82,3 +93,14 @@ antBug是一个前端模块化的异常上报组件,可以上报前端的js执�
 
 ### 自定义上报错误 antBug.error(errorContent)
 用户通过此函数可以上传自定义的错误
+
+
+### DEMO
+
+     antBug.init({
+        appVersion: "3.1",//app版本
+      });
+     antBug.start();//启动异常上报
+     antBug.collectHttpError = false;
+     antBug.collectResourceError = true;
+     antBug.SERVER_HOST = "http://www.baidu.com";

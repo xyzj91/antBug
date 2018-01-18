@@ -9,7 +9,7 @@ window.antBug = (function(window,documents){
     ant.SERVER_HOST = "";//服务器地址
     ant.APP_ID = "default";//唯一识别ID
     ant.DEBUG = false;//debug 模式
-    _self.APIVERSION = "1.0";//插件版本
+    _self.APIVERSION = "1.1";//插件版本
     _self.messageContent = {
         notifierVersion: _self.APIVERSION,//插件版本号
         userAgent: window.navigator.userAgent,//用户agent头
@@ -33,6 +33,8 @@ window.antBug = (function(window,documents){
     ant.collectResourceError = true;//是否收集资源加载错误
     ant.collectHttpError = true;//是否收集http错误
     ant.maxErrorNum = 20;//最大错误量
+    ant.autoWaittime = 2000;//自动开启异常上报的等待时间
+    _self.push = false;//是否上报异常
     _self.breadcrumbs = [];//上报失败记录
 
     /**
@@ -219,7 +221,9 @@ window.antBug = (function(window,documents){
             ant.maxErrorNum -= 1;
             var message = _self.converData(_self.parseErrorMessage(messageContent));
             _self.dump(message);//输出日志
-            if(message){
+            _self.lastMessage = messageContent;
+            if(message&&_self.push){
+                _self.lastMessage = {};//移除最后记录
                 _self.send({
                     "type":"post",
                     "url":ant.SERVER_HOST,
@@ -233,8 +237,29 @@ window.antBug = (function(window,documents){
                         _self.dump(errcode,"记录上传失败");//输出日志
                     }
                 });
+            }else if(!_self.push){
+                _self.dump("页面未准备好,暂不上传日志,将日志记录起来");//输出日志
             }
         }
+    }
+    /**
+     * 启动bug收集
+     * @param data
+     */
+    ant.start = function(data){
+        _self.push = true;
+        ant.maxErrorNum+=1;
+        if(data){
+            _self.messageContent = ant.extend(_self.messageContent,data);//合并请求参数
+        }
+        _self.dump("页面准备完成,主动开启bug上传");//输出日志
+        if(_self.lastMessage){//如果有消息,则主动触发上传
+            _self.dump("页面存在异常,上传bug");
+            ant.error(_self.lastMessage);
+        }else{
+            _self.dump("lastMessage 无内容");
+        }
+
     }
     /**
      * 将记录推入数组中
@@ -456,6 +481,18 @@ window.antBug = (function(window,documents){
         if(param){
             _self.messageContent = ant.extend(_self.messageContent,param);//合并请求参数
         }
+
+        window.onload = function(){
+            if(!_self.push){
+                //如果页面初始化完ant.autoWaittime之后还没启动异常上报,则系统自动触发一次.用于兼容老代码
+                setTimeout(function () {
+                    if(!_self.push){
+                        ant.start();//启动bug上报
+                    }
+                },ant.autoWaittime);
+            }
+        }
+        return ant;
     };
 
     return ant;
@@ -465,6 +502,7 @@ window.antBug = (function(window,documents){
  antBug.init({
     appVersion: "3.1",//app版本
 });
+ antBug.start();//启动异常上报
  antBug.collectHttpError = false;
  antBug.collectResourceError = true;
  antBug.SERVER_HOST = "http://www.baidu.com";
